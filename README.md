@@ -26,6 +26,11 @@ artist
 ## Install Dependencies from requirements file  
 ` $ pip3 install -r requirements.txt `  
 
+## Run Server  
+```  
+$ cd site  
+$ uvicorn main:app --reload  
+```  
 
 
 
