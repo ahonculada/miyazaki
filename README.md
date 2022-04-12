@@ -11,10 +11,10 @@ Postman
 
 ## Table animal
 
-id
-name
-ascii
-artist
+id  
+name  
+ascii  
+artist  
 
 
 
