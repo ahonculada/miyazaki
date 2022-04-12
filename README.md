@@ -11,7 +11,6 @@ Postman
 
 
 ## Table animal
-
 id  
 name  
 ascii  
