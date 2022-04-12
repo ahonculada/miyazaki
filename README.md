@@ -17,5 +17,15 @@ ascii
 artist  
 
 
+## Set up virtual env  
+` $ python3 -m venv miyazaki `  
+
+## Activate virtual env  
+` $ source /miyazaki/bin/activate `  
+
+## Install Dependencies from requirements file  
+` $ pip3 install -r requirements.txt `  
+
+
 
 
