@@ -23,33 +23,32 @@ async def root():
 async def get_animal(request: Request, animal_name: str):
     if not animal_name in AnimalName:
         raise HTTPException(status_code=404, detail="Animal not found.")
-    if animal_name == 'fish':
-        with open('../ascii/fish.txt') as data:
-            image = ''
-            for line in data:
-                image += line
-    elif animal_name == 'cat':
-        with open('../ascii/cat.txt') as data:
-            image = ''
-            for line in data:
-                image += line
-    elif animal_name == 'dog':
-        with open('../ascii/dog.txt') as data:
-            image = ''
-            for line in data:
-                image += line
-    elif animal_name == 'rabbit':
-        with open('../ascii/rabbit.txt') as data:
-            image = ''
-            for line in data:
-                image += line
-    elif animal_name == 'cow':
-        with open('../ascii/cow.txt') as data:
-            image = ''
-            for line in data:
-                image += line
-    #result = getAscii(animal_name)
-    result = image
+    #if animal_name == 'fish':
+    #    with open('../ascii/fish.txt') as data:
+    #        image = ''
+    #        for line in data:
+    #            image += line
+    #elif animal_name == 'cat':
+    #    with open('../ascii/cat.txt') as data:
+    #        image = ''
+    #        for line in data:
+    #            image += line
+    #elif animal_name == 'dog':
+    #    with open('../ascii/dog.txt') as data:
+    #        image = ''
+    #        for line in data:
+    #            image += line
+    #elif animal_name == 'rabbit':
+    #    with open('../ascii/rabbit.txt') as data:
+    #        image = ''
+    #        for line in data:
+    #            image += line
+    #elif animal_name == 'cow':
+    #    with open('../ascii/cow.txt') as data:
+    #        image = ''
+    #        for line in data:
+    #            image += line
+    result = getAscii(animal_name)
     return templates.TemplateResponse('animal.html', context={'request': request, 'result': result})
 
 @app.get('/animal')
@@ -59,32 +58,31 @@ async def form_post(request: Request):
 
 @app.post('/animal')
 async def form_post(request: Request, animal: str = Form(...)):
-    if animal == 'fish':
-        with open('../ascii/fish.txt') as data:
-            image = ''
-            for line in data:
-                image += line
-    elif animal == 'cat':
-        with open('../ascii/cat.txt') as data:
-            image = ''
-            for line in data:
-                image += line
-    elif animal == 'dog':
-        with open('../ascii/dog.txt') as data:
-            image = ''
-            for line in data:
-                image += line
-    elif animal == 'rabbit':
-        with open('../ascii/rabbit.txt') as data:
-            image = ''
-            for line in data:
-                image += line
-    elif animal == 'cow':
-        with open('../ascii/cow.txt') as data:
-            image = ''
-            for line in data:
-                image += line
-    #result = getAscii(animal)
-    result = image
+    #if animal == 'fish':
+    #    with open('../ascii/fish.txt') as data:
+    #        image = ''
+    #        for line in data:
+    #            image += line
+    #elif animal == 'cat':
+    #    with open('../ascii/cat.txt') as data:
+    #        image = ''
+    #        for line in data:
+    #            image += line
+    #elif animal == 'dog':
+    #    with open('../ascii/dog.txt') as data:
+    #        image = ''
+    #        for line in data:
+    #            image += line
+    #elif animal == 'rabbit':
+    #    with open('../ascii/rabbit.txt') as data:
+    #        image = ''
+    #        for line in data:
+    #            image += line
+    #elif animal == 'cow':
+    #    with open('../ascii/cow.txt') as data:
+    #        image = ''
+    #        for line in data:
+    #            image += line
+    result = getAscii(animal)
     return templates.TemplateResponse('form.html', context={'request': request, 'result': result})
 
