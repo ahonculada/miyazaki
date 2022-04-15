@@ -1,5 +1,5 @@
 from enum import Enum
-from fastapi import FastAPI, Request, Form
+from fastapi import FastAPI, Request, Form, HTTPException
 from fastapi.templating import Jinja2Templates
 from database import getAscii
 
@@ -7,17 +7,22 @@ app = FastAPI()
 templates = Jinja2Templates(directory="../templates/")
 
 # TODO generalize this class
-class AnimalName(str, Enum):
-    fish = 'fish'
-    cat = 'cat'
-    rabbit = 'rabbit'
+#class AnimalName(str, Enum):
+#    fish = 'fish'
+#    cat = 'cat'
+#    rabbit = 'rabbit'
+#    cow = 'cow'
+#    dog = 'dog'
+AnimalName = set(['fish', 'cat', 'rabbit', 'cow', 'dog'])
 
 @app.get('/')
 async def root():
     return { "message": "Hello, Girl!"}
 
 @app.get('/animal/{animal_name}')
-async def get_animal(request: Request, animal_name: AnimalName):
+async def get_animal(request: Request, animal_name: str):
+    if not animal_name in AnimalName:
+        raise HTTPException(status_code=404, detail="Animal not found.")
     result = getAscii(animal_name)
     return templates.TemplateResponse('animal.html', context={'request': request, 'result': result})
 
