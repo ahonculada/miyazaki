@@ -17,5 +17,7 @@ def getAnimals(username: str) -> str:
     user = users.find_one({'name': f'{username}'})
     return user['animals']
 
+# def addAnimal()
+
 if __name__ == '__main__':
     getAnimals('vangogh')
