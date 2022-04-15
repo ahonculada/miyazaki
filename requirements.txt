@@ -1,1 +1,4 @@
-fastapi[all]
+fastapi==0.75.1
+uvicorn==0.17.1
+pymongo==4.1.1
+dnspython==2.2.1
