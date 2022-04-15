@@ -10,3 +10,12 @@ def getAscii(animal_name: str) -> str:
     animals = mydb['animals']
     animal = animals.find_one({'name': f'{animal_name}'})
     return animal['ascii']
+
+def getAnimals(username: str) -> str:
+    mydb = client['Miyazaki-db']
+    users = mydb['users']
+    user = users.find_one({'name': f'{username}'})
+    return user['animals']
+
+if __name__ == '__main__':
+    getAnimals('vangogh')

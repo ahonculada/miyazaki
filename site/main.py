@@ -1,7 +1,7 @@
 from enum import Enum
 from fastapi import FastAPI, Request, Form, HTTPException
 from fastapi.templating import Jinja2Templates
-from database import getAscii
+from database import getAscii, getAnimals
 
 app = FastAPI()
 templates = Jinja2Templates(directory="../templates/")
@@ -16,8 +16,9 @@ templates = Jinja2Templates(directory="../templates/")
 AnimalName = set(['fish', 'cat', 'rabbit', 'cow', 'dog'])
 
 @app.get('/')
-async def root():
-    return { "message": "Hello, Girl!"}
+async def root(request: Request):
+    result = None
+    return templates.TemplateResponse('landing.html', context={'request': request, 'result': result})
 
 @app.get('/animal/{animal_name}')
 async def get_animal(request: Request, animal_name: str):
@@ -86,3 +87,7 @@ async def form_post(request: Request, animal: str = Form(...)):
     result = getAscii(animal)
     return templates.TemplateResponse('form.html', context={'request': request, 'result': result})
 
+@app.get('/user/{username}')
+async def get_animal(request: Request, username: str):
+    result = {'username': username, 'animals': getAnimals(username)}
+    return templates.TemplateResponse('user.html', context={'request': request, 'result': result})
