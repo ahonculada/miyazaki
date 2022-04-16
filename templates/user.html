@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Cloud Zoo</title>
+  </head>
+  <body>
+    <h1>{{ result['username'] }}</h1>
+    <ul>
+      {% for animal in result['animals'] %}
+      <li><a href="/animal/{{ animal }}">{{ animal }}</a></li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>
