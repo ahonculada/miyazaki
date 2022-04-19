@@ -1,4 +1,5 @@
 from unicodedata import name
+
 import pymongo
 from bson.objectid import ObjectId
 
@@ -75,6 +76,12 @@ def addAnimal(animal: str, ascii: str, artist: str) -> bool:
     # return animal_helper(new_animal)
     return True
 
+def addUser(artist: str) -> bool:
+    mydb = client['Miyazaki-db']
+    users = mydb['users']
+    users.insert_one({"name": artist, "animals": []})
+    return True
+
 # # Get an animal with a matching name
 def get_animal(name: str) -> dict:
     mydb = client['Miyazaki-db']
@@ -82,5 +89,5 @@ def get_animal(name: str) -> dict:
     if animal:
         return animal_helper(animal)
 
-if __name__ == '__main__':
-   print(addAnimal('fish', '<>< <><', 'kanye'))
+# if __name__ == '__main__':
+#    print(addUser('kanye'))
