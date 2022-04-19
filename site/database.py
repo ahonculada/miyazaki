@@ -89,5 +89,13 @@ def get_animal(name: str) -> dict:
     if animal:
         return animal_helper(animal)
 
-# if __name__ == '__main__':
-#    print(addUser('kanye'))
+
+def getAllAnimals(animal_name: str) -> pymongo.cursor.Cursor:
+    mydb = client['Miyazaki-db']
+    animals = mydb['animals']
+    results = animals.find({'name': 'cat'})
+    return results
+
+if __name__ == '__main__':
+    getAnimals('vangogh')
+
