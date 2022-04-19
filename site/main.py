@@ -3,7 +3,7 @@ from enum import Enum
 from fastapi import FastAPI, Form, HTTPException, Request
 from fastapi.templating import Jinja2Templates
 
-from database import (addAnimal, getAllAnimals, getAnimals, getAscii,
+from database import (addAnimal, addUser, getAllAnimals, getAnimals, getAscii,
                       getUserId_from_animal, getUsername_from_userId)
 
 app = FastAPI()
@@ -52,7 +52,7 @@ async def form_post(request: Request):
 
 @app.post('/signup')
 async def form_post(request: Request, username: str = Form(...)):
-    #result = getAscii(animal)
+    addUser(username)
     result = username
     return templates.TemplateResponse('signup.html', context={'request': request, 'result': result})
 

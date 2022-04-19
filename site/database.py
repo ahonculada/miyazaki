@@ -79,6 +79,8 @@ def addAnimal(animal: str, ascii: str, artist: str) -> bool:
 def addUser(artist: str) -> bool:
     mydb = client['Miyazaki-db']
     users = mydb['users']
+    if users.find_one({"name": artist}):
+        return False
     users.insert_one({"name": artist, "animals": []})
     return True
 
