@@ -2,7 +2,7 @@ from typing import Optional
 from pydantic import BaseModel, Field
 
 class AnimalSchema(BaseModel):
-    id: int = Field(...)
+    # id: int = Field(...)
     name: str = Field(...)
     ascii: str = Field(...)
     artist: str = Field(...)
@@ -17,7 +17,7 @@ class AnimalSchema(BaseModel):
             }
         }
 class updateAnimalModel(BaseModel):
-    id: Optional[int]
+    # id: Optional[int]
     name: Optional[str]
     ascii: Optional[str]
     artist: Optional[str]

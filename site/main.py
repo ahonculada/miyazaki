@@ -1,7 +1,8 @@
 from enum import Enum
 from fastapi import FastAPI, Request, Form, HTTPException
 from fastapi.templating import Jinja2Templates
-from database import getAscii, getAnimals
+from database import getAscii, getAnimals, addAnimal
+from models.animal import AnimalSchema, updateAnimalModel
 
 app = FastAPI()
 templates = Jinja2Templates(directory="../templates/")
@@ -24,31 +25,6 @@ async def root(request: Request):
 async def get_animal(request: Request, animal_name: str):
     if not animal_name in AnimalName:
         raise HTTPException(status_code=404, detail="Animal not found.")
-    #if animal_name == 'fish':
-    #    with open('../ascii/fish.txt') as data:
-    #        image = ''
-    #        for line in data:
-    #            image += line
-    #elif animal_name == 'cat':
-    #    with open('../ascii/cat.txt') as data:
-    #        image = ''
-    #        for line in data:
-    #            image += line
-    #elif animal_name == 'dog':
-    #    with open('../ascii/dog.txt') as data:
-    #        image = ''
-    #        for line in data:
-    #            image += line
-    #elif animal_name == 'rabbit':
-    #    with open('../ascii/rabbit.txt') as data:
-    #        image = ''
-    #        for line in data:
-    #            image += line
-    #elif animal_name == 'cow':
-    #    with open('../ascii/cow.txt') as data:
-    #        image = ''
-    #        for line in data:
-    #            image += line
     result = getAscii(animal_name)
     return templates.TemplateResponse('animal.html', context={'request': request, 'result': result})
 
@@ -59,33 +35,18 @@ async def form_post(request: Request):
 
 @app.post('/animal')
 async def form_post(request: Request, animal: str = Form(...)):
-    #if animal == 'fish':
-    #    with open('../ascii/fish.txt') as data:
-    #        image = ''
-    #        for line in data:
-    #            image += line
-    #elif animal == 'cat':
-    #    with open('../ascii/cat.txt') as data:
-    #        image = ''
-    #        for line in data:
-    #            image += line
-    #elif animal == 'dog':
-    #    with open('../ascii/dog.txt') as data:
-    #        image = ''
-    #        for line in data:
-    #            image += line
-    #elif animal == 'rabbit':
-    #    with open('../ascii/rabbit.txt') as data:
-    #        image = ''
-    #        for line in data:
-    #            image += line
-    #elif animal == 'cow':
-    #    with open('../ascii/cow.txt') as data:
-    #        image = ''
-    #        for line in data:
-    #            image += line
     result = getAscii(animal)
     return templates.TemplateResponse('form.html', context={'request': request, 'result': result})
+
+@app.get('/upload')
+async def upload_post(request: Request):
+    result = "Add an animal!"
+    return templates.TemplateResponse('upload.html', context={'request': request, 'result': result})
+
+@app.post('/upload')
+async def upload_post(request: Request, animal: str = Form(...), artist: str = Form(...), ascii: str = Form(...)):
+    result = addAnimal(animal, artist, ascii)
+    return templates.TemplateResponse('upload.html', context={'request': request, 'result': result})
 
 @app.get('/user/{username}')
 async def get_animal(request: Request, username: str):
