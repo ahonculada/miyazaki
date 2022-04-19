@@ -1,7 +1,7 @@
 from enum import Enum
 from fastapi import FastAPI, Request, Form, HTTPException
 from fastapi.templating import Jinja2Templates
-from database import getAscii, getAnimals, getUserId_from_animal, getUsername_from_userId
+from database import getAscii, getAnimals, getAllAnimals, getUserId_from_animal, getUsername_from_userId
 
 app = FastAPI()
 templates = Jinja2Templates(directory="../templates/")
@@ -24,22 +24,34 @@ async def root(request: Request):
 async def get_animal(request: Request, animal_name: str):
     if not animal_name in AnimalName:
         raise HTTPException(status_code=404, detail="Animal not found.")
-    result = {
-            'ascii': getAscii(animal_name), 
-            'animal': animal_name,
-            'artist': getUsername_from_userId(getUserId_from_animal(animal_name))
-            }
+    all_animals = getAllAnimals(animal_name)
+    result = [{
+            'ascii': animal['ascii'], 
+            'animal': animal['name'],
+            'artist': getUsername_from_userId(animal['userid'])
+            } for animal in all_animals]
     return templates.TemplateResponse('animal.html', context={'request': request, 'result': result})
 
 @app.get('/animal')
 async def form_post(request: Request):
     result = "Which animal would you like to see?"
-    return templates.TemplateResponse('form.html', context={'request': request, 'result': result})
+    return templates.TemplateResponse('search.html', context={'request': request, 'result': result})
 
 @app.post('/animal')
 async def form_post(request: Request, animal: str = Form(...)):
     result = getAscii(animal)
-    return templates.TemplateResponse('form.html', context={'request': request, 'result': result})
+    return templates.TemplateResponse('search.html', context={'request': request, 'result': result})
+
+@app.get('/signup')
+async def form_post(request: Request):
+    result = "Enter username and password"
+    return templates.TemplateResponse('signup.html', context={'request': request, 'result': result})
+
+@app.post('/signup')
+async def form_post(request: Request, username: str = Form(...)):
+    #result = getAscii(animal)
+    result = username
+    return templates.TemplateResponse('signup.html', context={'request': request, 'result': result})
 
 @app.get('/user/{username}')
 async def get_animal(request: Request, username: str):

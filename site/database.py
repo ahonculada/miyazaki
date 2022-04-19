@@ -30,6 +30,12 @@ def getAnimals(username: str) -> str:
     user = users.find_one({'name': f'{username}'})
     return user['animals']
 
+def getAllAnimals(animal_name: str) -> pymongo.cursor.Cursor:
+    mydb = client['Miyazaki-db']
+    animals = mydb['animals']
+    results = animals.find({'name': 'cat'})
+    return results
 
 if __name__ == '__main__':
     getAnimals('vangogh')
+
