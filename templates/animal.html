@@ -5,7 +5,11 @@
 	<title>Cloud Zoo</title>
 </head>
 <body>
-<p><pre>{{ result }}</pre></p>
+	<h1> {{ result[0]["name"] }} </h1>
+	{% for animal in result %}
+		<p><pre>{{ animal["ascii"] }}</pre></p>
+		<h2><a href="/user/{{ animal["artist"] }}">Artist: {{ animal["artist"] }}</a></h2>
+	{% endfor %}
 
 </body>
 </html>
