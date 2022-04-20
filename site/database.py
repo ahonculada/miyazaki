@@ -91,6 +91,12 @@ def get_animal(name: str) -> dict:
     if animal:
         return animal_helper(animal)
 
+def addUser(artist: str) -> bool:
+    # check if user exists before adding
+    mydb = client['Miyazaki-db']
+    users = mydb['users']
+    users.insert_one({"name": artist, "animals": []})
+    return True
 
 def getAllAnimals(animal_name: str) -> pymongo.cursor.Cursor:
     mydb = client['Miyazaki-db']
