@@ -5,22 +5,17 @@ from fastapi.templating import Jinja2Templates
 
 from database import (addAnimal, addUser, getAllAnimals, getAnimals, getAscii,
                       getUserId_from_animal, getUsername_from_userId)
+from auth.config import ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES, SECRET_KEY, DATABASE_SECRET
 
 app = FastAPI()
 templates = Jinja2Templates(directory="../templates/")
 
-# TODO generalize this class
-#class AnimalName(str, Enum):
-#    fish = 'fish'
-#    cat = 'cat'
-#    rabbit = 'rabbit'
-#    cow = 'cow'
-#    dog = 'dog'
 AnimalName = set(['fish', 'cat', 'rabbit', 'cow', 'dog'])
 
 @app.get('/')
 async def root(request: Request):
     result = None
+    print(ALGORITHM)
     return templates.TemplateResponse('landing.html', context={'request': request, 'result': result})
 
 @app.get('/animal/{animal_name}')
