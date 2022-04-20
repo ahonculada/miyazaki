@@ -1,12 +1,7 @@
 from enum import Enum
 from datetime import timedelta
 
-<<<<<<< HEAD
-from fastapi import Depends, FastAPI, Form, HTTPException, Request
-=======
 from fastapi import FastAPI, Depends, Form, HTTPException, status, Request
-from fastapi.templating import Jinja2Templates
->>>>>>> aaron-auth
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from fastapi.templating import Jinja2Templates
 
@@ -14,14 +9,9 @@ from auth.auth_config import (ACCESS_TOKEN_EXPIRE_MINUTES, ALGORITHM,
                               DATABASE_SECRET, SECRET_KEY)
 from database import (addAnimal, addUser, getAllAnimals, getAnimals, getAscii,
                       getUserId_from_animal, getUsername_from_userId)
-<<<<<<< HEAD
-
-# from auth.auth_models import Token
-=======
 from auth.auth import get_current_active_user
 from auth.auth_config import ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES, SECRET_KEY, DATABASE_SECRET
 from auth.auth_models import Token, User
->>>>>>> aaron-auth
 
 app = FastAPI()
 templates = Jinja2Templates(directory="../templates/")
