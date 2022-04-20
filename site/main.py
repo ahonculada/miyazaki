@@ -19,7 +19,6 @@ AnimalName = set(['fish', 'cat', 'rabbit', 'cow', 'dog'])
 @app.get('/')
 async def root(request: Request):
     result = None
-    print(ALGORITHM)
     return templates.TemplateResponse('landing.html', context={'request': request, 'result': result})
 
 @app.get('/animal/{animal_name}')
@@ -72,7 +71,7 @@ async def get_animal(request: Request, username: str):
 
 @app.post('/token', response_model=Token)
 async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
-    user = authenticate_user(getUserDb(), form_data.username, form_data.password)
+    user = authenticate_user(form_data.username, form_data.password)
     if not user:
         raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
