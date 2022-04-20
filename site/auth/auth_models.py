@@ -14,6 +14,8 @@ class TokenData(BaseModel):
 
 class User(BaseModel):
     username: str
+    animals: Optional[list] = None
+    hashed_password: Optional[str] = None
 
 
 class UserInDB(User):
