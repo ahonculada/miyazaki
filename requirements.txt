@@ -2,5 +2,5 @@ fastapi[all]
 bson
 pymongo
 jinja2
-jose
+python-jose[cryptography]
 passlib

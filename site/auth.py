@@ -6,9 +6,8 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 
-from auth_config import (ACCESS_TOKEN_EXPIRE_MINUTES, ALGORITHM,
-                         DATABASE_SECRET, SECRET_KEY)
 from auth_db import get_user
+from auth_config import ACCESS_TOKEN_EXPIRE_MINUTES, ALGORITHM, DATABASE_SECRET, SECRET_KEY
 
 from auth_models import Token, TokenData, User, UserInDB
 
@@ -67,4 +66,4 @@ async def get_current_active_user(current_user: User = Depends(get_current_user)
     return current_user
 
 if __name__ == '__main__':
-   print(authenticate_user('kanye', '12313'))
+   print(authenticate_user('kanye', '123123'))

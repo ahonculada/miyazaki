@@ -1,27 +1,15 @@
 from enum import Enum
 from datetime import timedelta
 
-<<<<<<< HEAD
-from fastapi import Depends, FastAPI, Form, HTTPException, Request
-=======
 from fastapi import FastAPI, Depends, Form, HTTPException, status, Request
 from fastapi.templating import Jinja2Templates
->>>>>>> aaron-auth
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from fastapi.templating import Jinja2Templates
 
-from auth.auth_config import (ACCESS_TOKEN_EXPIRE_MINUTES, ALGORITHM,
-                              DATABASE_SECRET, SECRET_KEY)
 from database import (addAnimal, addUser, getAllAnimals, getAnimals, getAscii,
                       getUserId_from_animal, getUsername_from_userId)
-<<<<<<< HEAD
-
-# from auth.auth_models import Token
-=======
-from auth.auth import get_current_active_user
-from auth.auth_config import ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES, SECRET_KEY, DATABASE_SECRET
-from auth.auth_models import Token, User
->>>>>>> aaron-auth
+from auth import get_current_active_user, authenticate_user, create_access_token
+from auth_config import ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES, SECRET_KEY, DATABASE_SECRET
+from auth_models import Token, User
 
 app = FastAPI()
 templates = Jinja2Templates(directory="../templates/")
@@ -81,16 +69,22 @@ async def get_animal(request: Request, username: str):
     result = {'username': username, 'animals': getAnimals(username)}
     return templates.TemplateResponse('user.html', context={'request': request, 'result': result})
 
+@app.get('/token')
+async def login_for_access_token(request: Request):
+    result = "Enter username and password"
+    return templates.TemplateResponse('login.html', context={'request': request, 'result': result})
+
 @app.post('/token', response_model=Token)
-async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
-    user = authenticate_user(form_data.username, form_data.password)
+#async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
+async def login_for_access_token(request: Request, username: str = Form(...), password: str = Form(...)):
+    user = authenticate_user(username, password)
     if not user:
         raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail='Incorrect username or password',
                 headers={'WWW-Authenticate': 'Bearer'},
         )
-    access_token_expres = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
             data={'sub': user.username}, expires_delta=access_token_expires
     )
@@ -100,7 +94,7 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
 async def read_users_me(current_user: User = Depends(get_current_active_user)):
     return current_user
 
-@app.get('/users/me/')
+@app.get('/users/me/animals/')
 async def read_own_animals(request: Request, current_user: User = Depends(get_current_active_user)):
     result = {'username': current_user.username, 'animals': getAnimals(current_user.username)}
     return templates.TemplateResponse('user.html', context={'request': request, 'result': result})

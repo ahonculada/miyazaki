@@ -13,7 +13,7 @@ from pydantic import BaseModel
 
 from auth_models import Token, TokenData, User, UserInDB
 
-with open('../../secrets.txt') as data:
+with open('../secrets.txt') as data:
     password = ''.join(data.readlines())[:-1]
 
 client = pymongo.MongoClient(f"mongodb+srv://miyazaki:{ password }@miyazaki-cluster-1.qhpgx.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
