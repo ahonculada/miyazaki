@@ -1,11 +1,13 @@
 from enum import Enum
 
-from fastapi import FastAPI, Form, HTTPException, Request
+from fastapi import FastAPI, Depends, Form, HTTPException, Request
 from fastapi.templating import Jinja2Templates
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 
 from database import (addAnimal, addUser, getAllAnimals, getAnimals, getAscii,
                       getUserId_from_animal, getUsername_from_userId)
 from auth.config import ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES, SECRET_KEY, DATABASE_SECRET
+from auth.auth_models import Token
 
 app = FastAPI()
 templates = Jinja2Templates(directory="../templates/")
@@ -65,3 +67,4 @@ async def upload_post(request: Request, animal: str = Form(...), artist: str = F
 async def get_animal(request: Request, username: str):
     result = {'username': username, 'animals': getAnimals(username)}
     return templates.TemplateResponse('user.html', context={'request': request, 'result': result})
+
