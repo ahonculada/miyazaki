@@ -70,5 +70,12 @@ def get_animal(name: str) -> dict:
     if animal:
         return animal_helper(animal)
 
+def addUser(artist: str) -> bool:
+    # check if user exists before adding
+    mydb = client['Miyazaki-db']
+    users = mydb['users']
+    users.insert_one({"name": artist, "animals": []})
+    return True
+
 if __name__ == '__main__':
-   print(addAnimal('fish', '<>< <><', 'kanye'))
+   print(addUser('zel'))
