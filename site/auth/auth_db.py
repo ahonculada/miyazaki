@@ -1,17 +1,16 @@
 from datetime import datetime, timedelta
 from typing import Optional
+from unicodedata import name
 
+import pymongo
+from bson.objectid import ObjectId
 from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 from pydantic import BaseModel
+
 from auth_models import Token, TokenData, User, UserInDB
-
-from unicodedata import name
-
-import pymongo
-from bson.objectid import ObjectId
 
 with open('../../secrets.txt') as data:
     password = ''.join(data.readlines())[:-1]
@@ -23,7 +22,7 @@ def get_user(username: str) -> User:
     user_collection = mydb['users']
     user = user_collection.find_one({"name":username})
     if user:
-        return user['name']
+        return user
     
     return None
 
