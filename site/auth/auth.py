@@ -1,7 +1,6 @@
 from datetime import datetime, timedelta
 from typing import Optional
 
-from db_models import TokenData, User
 from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
@@ -10,6 +9,8 @@ from passlib.context import CryptContext
 from auth_config import (ACCESS_TOKEN_EXPIRE_MINUTES, ALGORITHM,
                          DATABASE_SECRET, SECRET_KEY)
 from auth_db import get_user
+
+from auth_models import Token, TokenData, User, UserInDB
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -22,13 +23,13 @@ def get_password_hash(password):
     return pwd_context.hash(password)
 
 
-def authenticate_user(username: str, password: str):
+def authenticate_user(username: str, password: str)->User:
     # this needs to be a user model
     user = get_user(username)
     if not user:
-        return False
+        return None
     if not verify_password(password, user.hashed_password):
-        return False
+        return None
     return user
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
@@ -65,4 +66,5 @@ async def get_current_active_user(current_user: User = Depends(get_current_user)
     #     raise HTTPException(status_code=400, detail="Inactive user")
     return current_user
 
-
+if __name__ == '__main__':
+   print(authenticate_user('kanye', '12313'))
