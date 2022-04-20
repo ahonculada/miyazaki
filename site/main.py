@@ -1,13 +1,15 @@
 from enum import Enum
+from datetime import timedelta
 
-from fastapi import FastAPI, Depends, Form, HTTPException, Request
+from fastapi import FastAPI, Depends, Form, HTTPException, status, Request
 from fastapi.templating import Jinja2Templates
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 
 from database import (addAnimal, addUser, getAllAnimals, getAnimals, getAscii,
                       getUserId_from_animal, getUsername_from_userId)
-from auth.config import ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES, SECRET_KEY, DATABASE_SECRET
-from auth.auth_models import Token
+from auth.auth import get_current_active_user
+from auth.auth_config import ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES, SECRET_KEY, DATABASE_SECRET
+from auth.auth_models import Token, User
 
 app = FastAPI()
 templates = Jinja2Templates(directory="../templates/")
@@ -66,5 +68,29 @@ async def upload_post(request: Request, animal: str = Form(...), artist: str = F
 @app.get('/user/{username}')
 async def get_animal(request: Request, username: str):
     result = {'username': username, 'animals': getAnimals(username)}
+    return templates.TemplateResponse('user.html', context={'request': request, 'result': result})
+
+@app.post('/token', response_model=Token)
+async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
+    user = authenticate_user(getUserDb(), form_data.username, form_data.password)
+    if not user:
+        raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail='Incorrect username or password',
+                headers={'WWW-Authenticate': 'Bearer'},
+        )
+    access_token_expres = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(
+            data={'sub': user.username}, expires_delta=access_token_expires
+    )
+    return {'access_token': access_token, 'token_type': 'bearer'}
+
+@app.get('/users/me/', response_model=User)
+async def read_users_me(current_user: User = Depends(get_current_active_user)):
+    return current_user
+
+@app.get('/users/me/')
+async def read_own_animals(request: Request, current_user: User = Depends(get_current_active_user)):
+    result = {'username': current_user.username, 'animals': getAnimals(current_user.username)}
     return templates.TemplateResponse('user.html', context={'request': request, 'result': result})
 
