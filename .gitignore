@@ -1,3 +1,4 @@
 miyazaki/
 __pycache__/
 secrets.txt
+site/auth/auth_config.py
